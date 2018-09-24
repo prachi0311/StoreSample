@@ -1,5 +1,3 @@
 <resources>
     <string name="app_name">Store Sample</string>
-    <string name="selected_tag">Tag</string>
-
 </resources>

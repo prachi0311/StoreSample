@@ -2,6 +2,7 @@ package com.example.prachisingh.storesample.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,12 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.prachisingh.storesample.StringConstants.ACCESSTOKEN;
+import static com.example.prachisingh.storesample.StringConstants.PAGENUMBER;
+import static com.example.prachisingh.storesample.StringConstants.PRODUCTIDARRAY;
+import static com.example.prachisingh.storesample.StringConstants.SELECTEDTAG;
+import static com.example.prachisingh.storesample.StringConstants.PRODUCTIDARRAY;
 
 /**
  * Created by prachisingh on 23/09/18.
@@ -44,18 +51,16 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.TagViewH
     }
 
     @Override
-    public void onBindViewHolder(TagItemAdapter.TagViewHolder holder, final int position) {
+    public void onBindViewHolder(final TagItemAdapter.TagViewHolder holder, final int position) {
         holder.tagName.setText(mTags.get(position));
         View.OnClickListener listener=new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent=new Intent();
-                intent.putExtra("Tag",mTags.get(position));
-                Log.i("mapsize",String.valueOf(vMap.size()));
-                intent.putExtra("tagMap",vMap.get(mTags.get(position)));
-                intent.putExtra("page_number",mPageNumber);
-                intent.putExtra("access_token",mAcessToken);
+                intent.putExtra(SELECTEDTAG,mTags.get(position));
+                intent.putExtra(PRODUCTIDARRAY,vMap.get(mTags.get(position)));
+                intent.putExtra(PAGENUMBER,mPageNumber);
+                intent.putExtra(ACCESSTOKEN,mAcessToken);
                 intent.setClass(mContext,ProductListActivity.class);
                 mContext.startActivity(intent);
 

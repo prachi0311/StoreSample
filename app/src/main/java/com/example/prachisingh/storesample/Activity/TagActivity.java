@@ -1,6 +1,7 @@
 package com.example.prachisingh.storesample.Activity;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -29,10 +30,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.prachisingh.storesample.StringConstants.ACCESSTOKEN;
+
 public class TagActivity extends AppCompatActivity {
     int pageNumber;
     String accessToken;
-    android.support.v7.widget.SearchView mSearchView;
     @BindView(R.id.tags_recyclerview)
     RecyclerView recyclerView;
     ListView mListView;
@@ -44,14 +46,14 @@ public class TagActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag);
-        String[] test={"test1","test2"};
+        ActionBar abar = getSupportActionBar();
+        abar.setTitle("TAGS");
         ButterKnife.bind(this);
         productList=new ArrayList<>();
         tagList=new ArrayList<>();
         map=new HashMap<>();
         pageNumber=1;
-        accessToken="c32313df0d0ef512ca64d5b336a0d7c6";
-       // mListView=findViewById(R.id.recyclerview);
+        accessToken=ACCESSTOKEN;
         adapter=new TagItemAdapter(this,tagList,map,pageNumber,accessToken);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         recyclerView.setAdapter(adapter);
@@ -87,7 +89,6 @@ public class TagActivity extends AppCompatActivity {
             String[] tags=tag.split(", ");
             getUniqueList(tags,i);
         }
-        Log.i("mapsize",String.valueOf(map.size()));
         updateTagList(map);
     }
 
@@ -111,7 +112,6 @@ public class TagActivity extends AppCompatActivity {
 
     private void updateTagList(HashMap<String, ArrayList<Long>> map) {
         tagList.addAll(map.keySet());
-        Log.i("taglistsiez",String.valueOf(tagList.size()));
         adapter.notifyDataSetChanged();
     }
 }

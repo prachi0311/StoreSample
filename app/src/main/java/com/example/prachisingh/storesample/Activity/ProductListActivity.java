@@ -1,12 +1,14 @@
 package com.example.prachisingh.storesample.Activity;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.example.prachisingh.storesample.Adapter.ProductItemAdapter;
 import com.example.prachisingh.storesample.ApiResponses.ProductItemsResponse;
@@ -24,10 +26,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.prachisingh.storesample.StringConstants.ACCESSTOKEN;
+import static com.example.prachisingh.storesample.StringConstants.PAGENUMBER;
+import static com.example.prachisingh.storesample.StringConstants.PRODUCTIDARRAY;
+import static com.example.prachisingh.storesample.StringConstants.SELECTEDTAG;
+import static com.example.prachisingh.storesample.StringConstants.PRODUCTIDARRAY;
+
 public class ProductListActivity extends AppCompatActivity {
     ArrayList<Long> productIdList;
     int pageNumber;
     String accessToken;
+    String tagName;
     ArrayList<ProductObject> productList;
     ArrayList<ProductObject> showProductList;
     @BindView(R.id.product_recyclerview)
@@ -39,14 +48,17 @@ public class ProductListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_list);
         ButterKnife.bind(this);
+        ActionBar abar = getSupportActionBar();
+        abar.setDisplayHomeAsUpEnabled(true);
         Intent i = getIntent();
-        pageNumber = i.getIntExtra("page_number", -1);
-        accessToken = i.getStringExtra("access_token");
+        tagName=i.getStringExtra(SELECTEDTAG);
+        abar.setTitle("TAG"+" = " + '"' + tagName +'"');
+        pageNumber = i.getIntExtra(PAGENUMBER, -1);
+        accessToken = i.getStringExtra(ACCESSTOKEN);
         productIdList = new ArrayList<>();
         productList = new ArrayList<>();
         showProductList = new ArrayList<>();
-        productIdList = (ArrayList<Long>) i.getSerializableExtra("tagMap");
-        Log.i("test", String.valueOf(productIdList.size()));
+        productIdList = (ArrayList<Long>) i.getSerializableExtra(PRODUCTIDARRAY);
         adapter=new ProductItemAdapter(this,showProductList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -61,7 +73,6 @@ public class ProductListActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ProductItemsResponse> call, Response<ProductItemsResponse> response) {
                 if (response.code() == 200) {
-                    Log.i("response","succes");
                     productList.addAll(response.body().getProducts());
                     selectProducts(productList);
 
@@ -70,7 +81,7 @@ public class ProductListActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ProductItemsResponse> call, Throwable t) {
-                Log.i("ApiResponce", t.toString());
+                Log.i("ApiResponse", t.toString());
 
             }
         });
@@ -78,20 +89,21 @@ public class ProductListActivity extends AppCompatActivity {
     }
 
     private void selectProducts(ArrayList<ProductObject> productList) {
-        Log.i("productlistsize", String.valueOf(productList.size()));
 
         for (int i = 0; i < productIdList.size(); i++) {
             for (int j = 0; j < productList.size(); j++) {
-              //  int temp = productList.indexOf(productIdList.get(i));
                 if(productList.get(j).getId()==productIdList.get(i))
                 showProductList.add(productList.get(j));
 
             }
-            Log.i("name", showProductList.get(i).getTitle());
-            Log.i("variant size", String.valueOf(showProductList.get(i).getVariants().size()));
-
 
         }
         adapter.notifyDataSetChanged();
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return true;
     }
 }

@@ -48,7 +48,11 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemAdapter.
     private String getVariants(ProductObject productObject) {
         String mVariants="";
         for (int i = 0; i < productObject.getVariants().size(); i++) {
+            if(i!=productObject.getVariants().size()-1)
             mVariants=mVariants+productObject.getVariants().get(i).getTitle()+" , ";
+            else
+                mVariants=mVariants+productObject.getVariants().get(i).getTitle();
+
         }
         return mVariants;
     }

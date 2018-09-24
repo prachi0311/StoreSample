@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="searchView_height">45dp</dimen>
+    <dimen name="top_margin">8dp</dimen>
+    <dimen name="product_img_height">110dp</dimen>
+    <dimen name="product_img_width">110dp</dimen>
+    <dimen name="product_name_width">270dp</dimen>
+    <dimen name="small_textsize">14sp</dimen>
+    <dimen name="big_textsize">16sp</dimen>
+    <dimen name="tag_img_height">35dp</dimen>
+    <dimen name="tag_name_padding">5dp</dimen>
 
 </resources>
